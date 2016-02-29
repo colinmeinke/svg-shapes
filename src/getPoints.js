@@ -1,5 +1,7 @@
 const getPoints = ( type, attributes ) => {
   switch ( type ) {
+    case 'line':
+      return getPointsFromLine( attributes );
     case 'polygon':
       return getPointsFromPolygon( attributes );
     case 'polyline':
@@ -11,15 +13,22 @@ const getPoints = ( type, attributes ) => {
   }
 };
 
+const getPointsFromLine = ({ x1, x2, y1, y2 }) => {
+  return [
+    { x: x1, y: y1 },
+    { x: x2, y: y2 },
+  ];
+};
+
 const getPointsFromPolygon = ({ points }) => {
-  return getPointsFromPoints({ points, closed: true });
+  return getPointsFromPoints({ closed: true, points });
 };
 
 const getPointsFromPolyline = ({ points }) => {
-  return getPointsFromPoints({ points, closed: false });
+  return getPointsFromPoints({ closed: false, points });
 };
 
-const getPointsFromPoints = ({ points, closed }) => {
+const getPointsFromPoints = ({ closed, points }) => {
   const numbers = points.split( /[\s,]+/ ).map( n => parseFloat( n ));
 
   const p = numbers.reduce(( arr, point, i ) => {

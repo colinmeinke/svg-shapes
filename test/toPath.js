@@ -3,6 +3,19 @@ import expect from 'expect';
 import toPath from '../src/toPath';
 
 describe( 'toPath', () => {
+  it( 'should return correct path from line points', () => {
+    const points = [
+      { x: 10, y: 70 },
+      { x: 50, y: 200 },
+    ];
+
+    const expectedPath = 'M10,70L50,200';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
   it( 'should return correct path from polyline points', () => {
     const points = [
       { x: 20, y: 30 },

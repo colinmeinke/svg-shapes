@@ -3,6 +3,19 @@ import expect from 'expect';
 import getPoints from '../src/getPoints';
 
 describe( 'getPoints', () => {
+  it( 'should return correct points of a line', () => {
+    const attributes = { x1: 10, x2: 50, y1: 70, y2: 200 };
+
+    const expectedPoints = [
+      { x: 10, y: 70 },
+      { x: 50, y: 200 },
+    ];
+
+    const points = getPoints( 'line', attributes );
+
+    expect( points ).toEqual( expectedPoints );
+  });
+
   it( 'should return correct points of a polygon', () => {
     const attributes = { points: '20,30 50,90 20,90 50,30' };
 
