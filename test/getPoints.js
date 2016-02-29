@@ -17,6 +17,20 @@ describe( 'getPoints', () => {
     expect( points ).toEqual( expectedPoints );
   });
 
+  it( 'should return correct points of an ellipse', () => {
+    const attributes = { cx: 100, cy: 300, rx: 65, ry: 120 };
+
+    const expectedPoints = [
+      { x: 100, y: 180 },
+      { x: 100, y: 420, curve: { type: 'arc', rx: 65, ry: 120 }},
+      { x: 100, y: 180, curve: { type: 'arc', rx: 65, ry: 120 }},
+    ];
+
+    const points = getPoints( 'ellipse', attributes );
+
+    expect( points ).toEqual( expectedPoints );
+  });
+
   it( 'should return correct points of a line', () => {
     const attributes = { x1: 10, x2: 50, y1: 70, y2: 200 };
 

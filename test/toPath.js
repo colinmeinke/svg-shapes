@@ -17,6 +17,20 @@ describe( 'toPath', () => {
     expect( path ).toEqual( expectedPath );
   });
 
+  it( 'should return correct path from ellipse points', () => {
+    const points = [
+      { x: 100, y: 180 },
+      { x: 100, y: 420, curve: { type: 'arc', rx: 65, ry: 120 }},
+      { x: 100, y: 180, curve: { type: 'arc', rx: 65, ry: 120 }},
+    ];
+
+    const expectedPath = 'M100,180A65,120,0,0,0,100,420A65,120,0,0,0,100,180Z';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
   it( 'should return correct path from line points', () => {
     const points = [
       { x: 10, y: 70 },

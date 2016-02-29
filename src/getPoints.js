@@ -2,6 +2,8 @@ const getPoints = ( type, attributes ) => {
   switch ( type ) {
     case 'circle':
       return getPointsFromCircle( attributes );
+    case 'ellipse':
+      return getPointsFromEllipse( attributes );
     case 'line':
       return getPointsFromLine( attributes );
     case 'polygon':
@@ -20,6 +22,14 @@ const getPointsFromCircle = ({ cx, cy, r }) => {
     { x: cx, y: cy - r },
     { x: cx, y: cy + r, curve: { type: 'arc', rx: r, ry: r }},
     { x: cx, y: cy - r, curve: { type: 'arc', rx: r, ry: r }},
+  ];
+};
+
+const getPointsFromEllipse = ({ cx, cy, rx, ry }) => {
+  return [
+    { x: cx, y: cy - ry },
+    { x: cx, y: cy + ry, curve: { type: 'arc', rx: rx, ry: ry }},
+    { x: cx, y: cy - ry, curve: { type: 'arc', rx: rx, ry: ry }},
   ];
 };
 
