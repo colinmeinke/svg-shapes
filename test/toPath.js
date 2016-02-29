@@ -18,4 +18,19 @@ describe( 'toPath', () => {
 
     expect( path ).toEqual( expectedPath );
   });
+
+  it( 'should return correct path from polyline points', () => {
+    const points = [
+      { x: 20, y: 30 },
+      { x: 50, y: 90 },
+      { x: 20, y: 90 },
+      { x: 50, y: 30 },
+    ];
+
+    const expectedPath = 'M20,30L50,90H20L50,30';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
 });

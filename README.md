@@ -2,9 +2,10 @@
 
 Get point data from SVG shapes. Convert point data to an SVG path.
 
-Current support:
+Current shapes supported:
 
-- basic `rect`.
+- Polyline
+- Rect (note: no rx/ry support yet)
 
 ## Installation
 
@@ -13,6 +14,33 @@ npm install svg-shapes
 ```
 
 ## Usage
+
+### Polyline
+
+```js
+import { getPoints, toPath } from 'svg-shapes';
+
+const points = getPoints( 'polyline', {
+  points: '20,30 50,90 20,90 50,30',
+});
+
+console.log( points );
+
+// [
+//   { x: 20, y: 30 },
+//   { x: 50, y: 90 },
+//   { x: 20, y: 90 },
+//   { x: 50, y: 30 },
+// ]
+
+const path = toPath( points );
+
+console.log( path );
+
+// 'M20,30L50,90H20L50,30'
+```
+
+### Rect
 
 ```js
 import { getPoints, toPath } from 'svg-shapes';
