@@ -3,6 +3,20 @@ import expect from 'expect';
 import toPath from '../src/toPath';
 
 describe( 'toPath', () => {
+  it( 'should return correct path from circle points', () => {
+    const points = [
+      { x: 50, y: 30 },
+      { x: 50, y: 70, curve: { type: 'arc', rx: 20, ry: 20 }},
+      { x: 50, y: 30, curve: { type: 'arc', rx: 20, ry: 20 }},
+    ];
+
+    const expectedPath = 'M50,30A20,20,0,0,0,50,70A20,20,0,0,0,50,30Z';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
   it( 'should return correct path from line points', () => {
     const points = [
       { x: 10, y: 70 },

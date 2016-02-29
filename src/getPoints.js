@@ -1,5 +1,7 @@
 const getPoints = ( type, attributes ) => {
   switch ( type ) {
+    case 'circle':
+      return getPointsFromCircle( attributes );
     case 'line':
       return getPointsFromLine( attributes );
     case 'polygon':
@@ -11,6 +13,14 @@ const getPoints = ( type, attributes ) => {
     default:
       throw new Error( 'Not a valid shape type' );
   }
+};
+
+const getPointsFromCircle = ({ cx, cy, r }) => {
+  return [
+    { x: cx, y: cy - r },
+    { x: cx, y: cy + r, curve: { type: 'arc', rx: r, ry: r }},
+    { x: cx, y: cy - r, curve: { type: 'arc', rx: r, ry: r }},
+  ];
 };
 
 const getPointsFromLine = ({ x1, x2, y1, y2 }) => {

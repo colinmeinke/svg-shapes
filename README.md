@@ -4,6 +4,7 @@ Get point data from SVG shapes. Convert point data to an SVG path.
 
 Current shapes supported:
 
+- [Circle](#circle)
 - [Line](#line)
 - [Polygon](#polygon)
 - [Polyline](#polyline)
@@ -16,6 +17,32 @@ npm install svg-shapes
 ```
 
 ## Usage
+
+### Circle
+
+```js
+import { getPoints, toPath } from 'svg-shapes';
+
+const points = getPoints( 'circle', {
+  cx: 50,
+  cy: 50,
+  r: 20,
+});
+
+console.log( points );
+
+// [
+//   { x: 50, y: 30 },
+//   { x: 50, y: 70, curve: { type: 'arc', rx: 20, ry: 20 }},
+//   { x: 50, y: 30, curve: { type: 'arc', rx: 20, ry: 20 }},
+// ]
+
+const path = toPath( points );
+
+console.log( path );
+
+// 'M50,30A20,20,0,0,0,50,70A20,20,0,0,0,50,30Z'
+```
 
 ### Line
 
