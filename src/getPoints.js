@@ -28,8 +28,8 @@ const getPointsFromCircle = ({ cx, cy, r }) => {
 const getPointsFromEllipse = ({ cx, cy, rx, ry }) => {
   return [
     { x: cx, y: cy - ry },
-    { x: cx, y: cy + ry, curve: { type: 'arc', rx: rx, ry: ry }},
-    { x: cx, y: cy - ry, curve: { type: 'arc', rx: rx, ry: ry }},
+    { x: cx, y: cy + ry, curve: { type: 'arc', rx, ry }},
+    { x: cx, y: cy - ry, curve: { type: 'arc', rx, ry }},
   ];
 };
 
@@ -68,13 +68,44 @@ const getPointsFromPoints = ({ closed, points }) => {
   return p;
 };
 
-const getPointsFromRect = ({ height, width, x, y }) => {
+const getPointsFromRect = ({ height, rx, ry, width, x, y }) => {
+  if ( rx || ry ) {
+    return getPointsFromRectWithCornerRadius({
+      height,
+      rx: rx ? rx : ry,
+      ry: ry ? ry : rx,
+      width,
+      x,
+      y,
+    });
+  }
+
+  return getPointsFromBasicRect({ height, width, x, y });
+};
+
+const getPointsFromBasicRect = ({ height, width, x, y }) => {
   return [
     { x, y },
     { x: x + width, y },
     { x: x + width, y: y + height },
     { x, y: y + height },
     { x, y },
+  ];
+};
+
+const getPointsFromRectWithCornerRadius = ({ height, rx, ry, width, x, y }) => {
+  const curve = { type: 'arc', rx, ry, sweepFlag: 1 };
+
+  return [
+    { x: x + rx, y },
+    { x: x + width - rx, y },
+    { x: x + width, y: y + ry, curve },
+    { x: x + width, y: y + height - ry },
+    { x: x + width - rx, y: y + height, curve },
+    { x: x + rx, y: y + height },
+    { x, y: y + height - ry, curve },
+    { x, y: y + ry },
+    { x: x + rx, y, curve },
   ];
 };
 

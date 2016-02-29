@@ -75,7 +75,7 @@ describe( 'getPoints', () => {
     expect( points ).toEqual( expectedPoints );
   });
 
-  it( 'should return correct points of a basic rect', () => {
+  it( 'should return correct points of a rect', () => {
     const attributes = { height: 20, width: 50, x: 10, y: 10 };
 
     const expectedPoints = [
@@ -84,6 +84,26 @@ describe( 'getPoints', () => {
       { x: 60, y: 30 },
       { x: 10, y: 30 },
       { x: 10, y: 10 },
+    ];
+
+    const points = getPoints( 'rect', attributes );
+
+    expect( points ).toEqual( expectedPoints );
+  });
+
+  it( 'should return correct points of a rect (with corner radius)', () => {
+    const attributes = { height: 200, rx: 5, ry: 10, width: 500, x: 50, y: 50 };
+
+    const expectedPoints = [
+      { x: 55, y: 50 },
+      { x: 545, y: 50 },
+      { x: 550, y: 60, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+      { x: 550, y: 240 },
+      { x: 545, y: 250, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+      { x: 55, y: 250 },
+      { x: 50, y: 240, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+      { x: 50, y: 60 },
+      { x: 55, y: 50, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
     ];
 
     const points = getPoints( 'rect', attributes );

@@ -9,7 +9,8 @@ Current shapes supported:
 - [Line](#line)
 - [Polygon](#polygon)
 - [Polyline](#polyline)
-- [Rect](#rect) (**note**: no rx/ry support yet)
+- [Rect](#rect)
+- [Rect (with corner radius)](#rect-with-corner-radius)
 
 ## Installation
 
@@ -176,4 +177,39 @@ const path = toPath( points );
 console.log( path );
 
 // 'M10,10H60V30H10Z'
+```
+
+### Rect (with corner radius)
+
+```js
+import { getPoints, toPath } from 'svg-shapes';
+
+const points = getPoints( 'rect', {
+  height: 200,
+  rx: 5,
+  ry: 10,
+  width: 500,
+  x: 50,
+  y: 50,
+});
+
+console.log( points );
+
+// [
+//   { x: 55, y: 50 },
+//   { x: 545, y: 50 },
+//   { x: 550, y: 60, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+//   { x: 550, y: 240 },
+//   { x: 545, y: 250, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+//   { x: 55, y: 250 },
+//   { x: 50, y: 240, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+//   { x: 50, y: 60 },
+//   { x: 55, y: 50, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+// ]
+
+const path = toPath( points );
+
+console.log( path );
+
+// 'M55,50H545A5,10,0,0,1,550,60V240A5,10,0,0,1,545,250H55A5,10,0,0,1,50,240V60A5,10,0,0,1,55,50Z'
 ```

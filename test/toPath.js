@@ -75,7 +75,7 @@ describe( 'toPath', () => {
     expect( path ).toEqual( expectedPath );
   });
 
-  it( 'should return correct path from basic rect points', () => {
+  it( 'should return correct path from rect points', () => {
     const points = [
       { x: 10, y: 10 },
       { x: 60, y: 10 },
@@ -85,6 +85,26 @@ describe( 'toPath', () => {
     ];
 
     const expectedPath = 'M10,10H60V30H10Z';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
+  it( 'should return correct path from rect points (with corner radius)', () => {
+    const points = [
+      { x: 55, y: 50 },
+      { x: 545, y: 50 },
+      { x: 550, y: 60, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+      { x: 550, y: 240 },
+      { x: 545, y: 250, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+      { x: 55, y: 250 },
+      { x: 50, y: 240, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+      { x: 50, y: 60 },
+      { x: 55, y: 50, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+    ];
+
+    const expectedPath = 'M55,50H545A5,10,0,0,1,550,60V240A5,10,0,0,1,545,250H55A5,10,0,0,1,50,240V60A5,10,0,0,1,55,50Z';
 
     const path = toPath( points );
 
