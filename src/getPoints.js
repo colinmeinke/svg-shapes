@@ -6,6 +6,8 @@ const getPoints = ( type, attributes ) => {
       return getPointsFromEllipse( attributes );
     case 'line':
       return getPointsFromLine( attributes );
+    case 'path':
+      return getPointsFromPath( attributes );
     case 'polygon':
       return getPointsFromPolygon( attributes );
     case 'polyline':
@@ -38,6 +40,91 @@ const getPointsFromLine = ({ x1, x2, y1, y2 }) => {
     { x: x1, y: y1 },
     { x: x2, y: y2 },
   ];
+};
+
+const getPointsFromPath = ({ d }) => {
+  const points = [];
+
+  const instructions = d.split( /[^a-zA-Z]+/ ).filter( i => i.length );
+  const numbers = d.split( /[^\-0-9.]+/ ).map( parseFloat ).filter( n => !isNaN( n ));
+
+  const optionalArcKeys = [ 'xAxisRotation', 'largeArcFlag', 'sweepFlag' ];
+
+  for ( let i = 0, l = instructions.length; i < l; i++ ) {
+    const isFirstPoint = i === 0;
+    const prevPoint = isFirstPoint ? null : points[ i - 1 ];
+
+    let relative = false;
+
+    switch ( instructions[ i ]) {
+      case 'm':
+      case 'l':
+        relative = true;
+
+      case 'M':
+      case 'L':
+        points.push({
+          x: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+          y: ( relative ? prevPoint.y : 0 ) + numbers.shift()
+        });
+
+        break;
+
+      case 'h':
+        relative = true;
+
+      case 'H':
+        points.push({
+          x: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+          y: prevPoint.y,
+        });
+
+        break;
+
+      case 'v':
+        relative = true;
+
+      case 'V':
+        points.push({
+          x: prevPoint.x,
+          y: ( relative ? prevPoint.y : 0 ) + numbers.shift(),
+        });
+
+        break;
+
+      case 'a':
+        relative = true;
+
+      case 'A':
+        points.push({
+          curve: {
+            type: 'arc',
+            rx: numbers.shift(),
+            ry: numbers.shift(),
+            xAxisRotation: numbers.shift(),
+            largeArcFlag: numbers.shift(),
+            sweepFlag: numbers.shift(),
+          },
+          x: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+          y: ( relative ? prevPoint.y : 0 ) + numbers.shift(),
+        });
+
+        for ( let k of optionalArcKeys ) {
+          if ( points[ i ][ 'curve' ][ k ] === 0 ) {
+            delete points[ i ][ 'curve' ][ k ];
+          }
+        }
+
+        break;
+
+      case 'z':
+      case 'Z':
+        points.push({ x: points[ 0 ].x, y: points[ 0 ].y });
+        break;
+    }
+  }
+
+  return points;
 };
 
 const getPointsFromPolygon = ({ points }) => {

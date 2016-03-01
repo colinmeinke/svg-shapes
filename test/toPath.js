@@ -44,6 +44,46 @@ describe( 'toPath', () => {
     expect( path ).toEqual( expectedPath );
   });
 
+  it( 'should return correct path from path points', () => {
+    const points = [
+      { x: 20, y: 20 },
+      { x: 70, y: 20 },
+      { x: 70, y: 40 },
+      { x: 90, y: 30 },
+      { x: 50, y: 30 },
+      { x: 50, y: 50 },
+      { x: 40, y: 30 },
+      { x: 20, y: 20 },
+    ];
+
+    const expectedPath = 'M20,20H70V40L90,30H50V50L40,30Z';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
+  it( 'should return correct path from path points (with arcs)', () => {
+    const points = [
+      { x: 20, y: 20 },
+      { x: 70, y: 20 },
+      { x: 70, y: 40 },
+      { x: 80, y: 35, curve: { type: 'arc', rx: 2, ry: 2, sweepFlag: 1 }},
+      { x: 90, y: 30 },
+      { x: 50, y: 30 },
+      { x: 50, y: 50 },
+      { x: 45, y: 40, curve: { type: 'arc', rx: 5, ry: 5, largeArcFlag: 1, xAxisRotation: 45 }},
+      { x: 40, y: 30 },
+      { x: 20, y: 20 },
+    ];
+
+    const expectedPath = 'M20,20H70V40A2,2,0,0,1,80,35L90,30H50V50A5,5,45,1,0,45,40L40,30Z';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
   it( 'should return correct path from polyline points', () => {
     const points = [
       { x: 20, y: 30 },

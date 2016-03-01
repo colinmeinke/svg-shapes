@@ -7,6 +7,7 @@ Current shapes supported:
 - [Circle](#circle)
 - [Ellipse](#ellipse)
 - [Line](#line)
+- [Path (*note*: currently only arc support for curves)](#path)
 - [Polygon](#polygon)
 - [Polyline](#polyline)
 - [Rect](#rect)
@@ -97,6 +98,48 @@ const path = toPath( points );
 console.log( path );
 
 // 'M10,70L50,200'
+```
+
+### Path
+
+```js
+import { getPoints, toPath } from 'svg-shapes';
+
+const points = getPoints( 'path', {
+  d: 'M20,20h50v20A2,2,0,0,1,80,35L90,30H50V50a5,5,45,1,0,-5,-10l-5,-10Z',
+});
+
+console.log( points );
+
+// [
+//   { x: 20, y: 20 },
+//   { x: 70, y: 20 },
+//   { x: 70, y: 40 },
+//   { x: 80, y: 35, curve: {
+//     type: 'arc',
+//     rx: 2,
+//     ry: 2,
+//     sweepFlag: 1,
+//   }},
+//   { x: 90, y: 30 },
+//   { x: 50, y: 30 },
+//   { x: 50, y: 50 },
+//   { x: 45, y: 40, curve: {
+//     type: 'arc',
+//     rx: 5,
+//     ry: 5,
+//     largeArcFlag: 1,
+//     xAxisRotation: 45,
+//   }},
+//   { x: 40, y: 30 },
+//   { x: 20, y: 20 },
+// ]
+
+const path = toPath( points );
+
+console.log( path );
+
+// 'M20,20H70V40A2,2,0,0,1,80,35L90,30H50V50A5,5,45,1,0,45,40L40,30Z'
 ```
 
 ### Polygon
@@ -198,13 +241,33 @@ console.log( points );
 // [
 //   { x: 55, y: 50 },
 //   { x: 545, y: 50 },
-//   { x: 550, y: 60, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+//   { x: 550, y: 60, curve: {
+//     type: 'arc',
+//     rx: 5,
+//     ry: 10,
+//     sweepFlag: 1,
+//   }},
 //   { x: 550, y: 240 },
-//   { x: 545, y: 250, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+//   { x: 545, y: 250, curve: {
+//     type: 'arc',
+//     rx: 5,
+//     ry: 10,
+//     sweepFlag: 1,
+//   }},
 //   { x: 55, y: 250 },
-//   { x: 50, y: 240, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+//   { x: 50, y: 240, curve: {
+//     type: 'arc',
+//     rx: 5,
+//     ry: 10,
+//     sweepFlag: 1,
+//   }},
 //   { x: 50, y: 60 },
-//   { x: 55, y: 50, curve: { type: 'arc', rx: 5, ry: 10, sweepFlag: 1 }},
+//   { x: 55, y: 50, curve: {
+//     type: 'arc',
+//     rx: 5,
+//     ry: 10,
+//     sweepFlag: 1,
+//   }},
 // ]
 
 const path = toPath( points );

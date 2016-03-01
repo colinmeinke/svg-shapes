@@ -44,6 +44,46 @@ describe( 'getPoints', () => {
     expect( points ).toEqual( expectedPoints );
   });
 
+  it( 'should return correct points of a path', () => {
+    const attributes = { d: 'M20,20h50v20L90,30H50V50l-10,-20z' };
+
+    const expectedPoints = [
+      { x: 20, y: 20 },
+      { x: 70, y: 20 },
+      { x: 70, y: 40 },
+      { x: 90, y: 30 },
+      { x: 50, y: 30 },
+      { x: 50, y: 50 },
+      { x: 40, y: 30 },
+      { x: 20, y: 20 },
+    ];
+
+    const points = getPoints( 'path', attributes );
+
+    expect( points ).toEqual( expectedPoints );
+  });
+
+  it( 'should return correct points of a path (with arcs)', () => {
+    const attributes = { d: 'M20,20h50v20A2,2,0,0,1,80,35L90,30H50V50a5,5,45,1,0,-5,-10l-5,-10Z' };
+
+    const expectedPoints = [
+      { x: 20, y: 20 },
+      { x: 70, y: 20 },
+      { x: 70, y: 40 },
+      { x: 80, y: 35, curve: { type: 'arc', rx: 2, ry: 2, sweepFlag: 1 }},
+      { x: 90, y: 30 },
+      { x: 50, y: 30 },
+      { x: 50, y: 50 },
+      { x: 45, y: 40, curve: { type: 'arc', rx: 5, ry: 5, largeArcFlag: 1, xAxisRotation: 45 }},
+      { x: 40, y: 30 },
+      { x: 20, y: 20 },
+    ];
+
+    const points = getPoints( 'path', attributes );
+
+    expect( points ).toEqual( expectedPoints );
+  });
+
   it( 'should return correct points of a polygon', () => {
     const attributes = { points: '20,30 50,90 20,90 50,30' };
 
