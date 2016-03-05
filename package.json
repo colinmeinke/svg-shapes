@@ -20,7 +20,7 @@
       "path": "node_modules/cz-conventional-changelog"
     }
   },
-  "description": "Get point data from SVG shapes. Convert point data to an SVG path.",
+  "description": "Get point data from SVG shapes. Convert point data to an SVG path",
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
