@@ -12,10 +12,21 @@ const toPath = points => {
 
     if ( isFirstPoint ) {
       d += `M${ x },${ y }`;
-    } else if ( curve && curve.type === 'arc' ) {
-      const { largeArcFlag = 0, rx, ry, sweepFlag = 0, xAxisRotation = 0 } = point.curve;
-
-      d += `A${ rx },${ ry },${ xAxisRotation },${ largeArcFlag },${ sweepFlag },${ x },${ y }`;
+    } else if ( curve ) {
+      switch ( curve.type ) {
+        case 'arc':
+          const { largeArcFlag = 0, rx, ry, sweepFlag = 0, xAxisRotation = 0 } = point.curve;
+          d += `A${ rx },${ ry },${ xAxisRotation },${ largeArcFlag },${ sweepFlag },${ x },${ y }`;
+          break;
+        case 'cubic':
+          const { x1: cx1, y1: cy1, x2: cx2, y2: cy2 } = point.curve;
+          d += `C${ cx1 },${ cy1 },${ cx2 },${ cy2 },${ x },${ y }`;
+          break;
+        case 'quadratic':
+          const { x1: qx1, y1: qy1 } = point.curve;
+          d += `Q${ qx1 },${ qy1 },${ x },${ y }`;
+          break;
+      }
 
       if ( isLastPoint && x === firstPoint.x && y === firstPoint.y ) {
         d += 'Z';

@@ -2,12 +2,12 @@
 
 Get point data from SVG shapes. Convert point data to an SVG path.
 
-Current shapes supported:
+Shapes supported:
 
 - [Circle](#circle)
 - [Ellipse](#ellipse)
 - [Line](#line)
-- [Path (*note*: currently only arc support for curves)](#path)
+- [Path](#path)
 - [Polygon](#polygon)
 - [Polyline](#polyline)
 - [Rect](#rect)

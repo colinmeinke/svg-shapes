@@ -117,6 +117,97 @@ const getPointsFromPath = ({ d }) => {
 
         break;
 
+      case 'c':
+        relative = true;
+
+      case 'C':
+        points.push({
+          curve: {
+            type: 'cubic',
+            x1: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+            y1: ( relative ? prevPoint.y : 0 ) + numbers.shift(),
+            x2: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+            y2: ( relative ? prevPoint.y : 0 ) + numbers.shift(),
+          },
+          x: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+          y: ( relative ? prevPoint.y : 0 ) + numbers.shift(),
+        });
+
+        break;
+
+      case 's':
+        relative = true;
+
+      case 'S':
+        const sx2 = ( relative ? prevPoint.x : 0 ) + numbers.shift();
+        const sy2 = ( relative ? prevPoint.y : 0 ) + numbers.shift();
+        const sx = ( relative ? prevPoint.x : 0 ) + numbers.shift();
+        const sy = ( relative ? prevPoint.y : 0 ) + numbers.shift();
+
+        const diff = {};
+
+        let sx1;
+        let sy1;
+
+        if ( prevPoint.curve && prevPoint.curve.type === 'cubic' ) {
+          diff.x = Math.abs( prevPoint.x - prevPoint.curve.x2 );
+          diff.y = Math.abs( prevPoint.y - prevPoint.curve.y2 );
+          sx1 = prevPoint.x < prevPoint.curve.x2 ? prevPoint.x - diff.x : prevPoint.x + diff.x;
+          sy1 = prevPoint.y < prevPoint.curve.y2 ? prevPoint.y - diff.y : prevPoint.y + diff.y;
+        } else {
+          diff.x = Math.abs( sx - sx2 );
+          diff.y = Math.abs( sy - sy2 );
+          sx1 = sx < sx2 ? prevPoint.x - diff.x : prevPoint.x + diff.x;
+          sy1 = sy < sy2 ? prevPoint.y + diff.y : prevPoint.y - diff.y;
+        }
+
+        points.push({ curve: { type: 'cubic', x1: sx1, y1: sy1, x2: sx2, y2: sy2 }, x: sx, y: sy });
+
+        break;
+
+      case 'q':
+        relative = true;
+
+      case 'Q':
+        points.push({
+          curve: {
+            type: 'quadratic',
+            x1: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+            y1: ( relative ? prevPoint.y : 0 ) + numbers.shift(),
+          },
+          x: ( relative ? prevPoint.x : 0 ) + numbers.shift(),
+          y: ( relative ? prevPoint.y : 0 ) + numbers.shift(),
+        });
+
+        break;
+
+      case 't':
+        relative = true;
+
+      case 'T':
+        const tx = ( relative ? prevPoint.x : 0 ) + numbers.shift();
+        const ty = ( relative ? prevPoint.y : 0 ) + numbers.shift();
+
+        let tx1;
+        let ty1;
+
+        if ( prevPoint.curve && prevPoint.curve.type === 'quadratic' ) {
+          const diff = {
+            x: Math.abs( prevPoint.x - prevPoint.curve.x1 ),
+            y: Math.abs( prevPoint.y - prevPoint.curve.y1 ),
+          };
+
+          tx1 = prevPoint.x < prevPoint.curve.x1 ? prevPoint.x - diff.x : prevPoint.x + diff.x;
+          ty1 = prevPoint.y < prevPoint.curve.y1 ? prevPoint.y - diff.y : prevPoint.y + diff.y;
+        } else {
+          tx1 = prevPoint.x;
+          ty1 = prevPoint.y;
+        }
+
+        points.push({ curve: { type: 'quadratic', x1: tx1, y1: ty1 }, x: tx, y: ty });
+
+        break;
+
       case 'z':
       case 'Z':
         points.push({ x: points[ 0 ].x, y: points[ 0 ].y });

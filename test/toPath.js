@@ -84,6 +84,77 @@ describe( 'toPath', () => {
     expect( path ).toEqual( expectedPath );
   });
 
+  it( 'should return correct path from path points (with cubic beziers)', () => {
+    const points = [
+      { x: 20, y: 20 },
+      { x: 70, y: 20 },
+      { x: 70, y: 40 },
+      { x: 80, y: 35, curve: { type: 'cubic', x1: 70, y1: 45, x2: 80, y2: 40 }},
+      { x: 90, y: 30 },
+      { x: 50, y: 30 },
+      { x: 50, y: 50 },
+      { x: 45, y: 40, curve: { type: 'cubic', x1: 55, y1: 47, x2: 50, y2: 43 }},
+      { x: 40, y: 30 },
+      { x: 20, y: 20 },
+    ];
+
+    const expectedPath = 'M20,20H70V40C70,45,80,40,80,35L90,30H50V50C55,47,50,43,45,40L40,30Z';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
+  it( 'should return correct path from path points (with shorthand cubic beziers)', () => {
+    const points = [
+      { x: 100, y: 100 },
+      { x: 200, y: 100, curve: { type: 'cubic', x1: 125, y1: 50, x2: 175, y2: 50 }},
+      { x: 300, y: 100, curve: { type: 'cubic', x1: 225, y1: 150, x2: 300, y2: 110 }},
+    ];
+
+    const expectedPath = 'M100,100C125,50,175,50,200,100C225,150,300,110,300,100';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
+  it( 'should return correct path from path points (with quadratic beziers)', () => {
+    const points = [
+      { x: 20, y: 20 },
+      { x: 70, y: 20 },
+      { x: 70, y: 40 },
+      { x: 80, y: 35, curve: { type: 'quadratic', x1: 70, y1: 45 }},
+      { x: 90, y: 30 },
+      { x: 50, y: 30 },
+      { x: 50, y: 50 },
+      { x: 45, y: 40, curve: { type: 'quadratic', x1: 55, y1: 47 }},
+      { x: 40, y: 30 },
+      { x: 20, y: 20 },
+    ];
+
+    const expectedPath = 'M20,20H70V40Q70,45,80,35L90,30H50V50Q55,47,45,40L40,30Z';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
+  it( 'should return correct path from path points (with shorthand quadratic beziers)', () => {
+    const points = [
+      { x: 300, y: 400 },
+      { x: 600, y: 400, curve: { type: 'quadratic', x1: 450, y1: 200 }},
+      { x: 900, y: 500, curve: { type: 'quadratic', x1: 750, y1: 600 }},
+      { x: 1000, y: 500, curve: { type: 'quadratic', x1: 1050, y1: 400 }},
+    ];
+
+    const expectedPath = 'M300,400Q450,200,600,400Q750,600,900,500Q1050,400,1000,500';
+
+    const path = toPath( points );
+
+    expect( path ).toEqual( expectedPath );
+  });
+
   it( 'should return correct path from polyline points', () => {
     const points = [
       { x: 20, y: 30 },
