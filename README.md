@@ -2,6 +2,8 @@
 
 Get point data from SVG shapes. Convert point data to an SVG path.
 
+1.9kb gzipped. No dependencies.
+
 Shapes supported:
 
 - [Circle](#circle)
