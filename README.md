@@ -1,3 +1,6 @@
+**DEPRECIATED**: Moved to [svg-points](https://github.com/colinmeinke/svg-points).
+All further work will happen over there.
+
 # SVG shapes
 
 Get point data from SVG shapes. Convert point data to an SVG path.
